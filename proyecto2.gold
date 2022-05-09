@@ -1,0 +1,311 @@
+using gold.**
+  
+         
+  
+var A
+var B
+
+procedure main(args:String[]) begin
+	var sc:java.util.Scanner(System.$in)
+    
+    A = ('a'‥'z')
+    B = ('0'‥'9')
+    
+	coder:=createCoder()
+	deCoder:=createDecoder()
+	Utilities.testCodeDecode(coder,deCoder)	
+   	
+end
+
+
+
+
+
+function createCoder():ITransducer begin
+	
+	
+	Q:={"1",λ}∪('1'‥'8')×('a'‥'z')×('a'‥'z')×('0'‥'8')
+	Σ :=('a'‥'z')
+	Σ´:=Σ∪{ '$'}∪('0'‥'9')
+	q₀:= "1"
+	F:=	 {'8'}× ('a'‥'z')×('a'‥'z')×('0'‥'8')
+
+	return 	GDeterministicTransducer(Q,Σ,Σ´,q₀,F,δ,g,h)
+end
+
+	
+	
+	
+function δ(state,input) begin
+	if state=λ then
+		return λ
+	
+		
+	end
+	
+	if state="1" then return ⟨'1', input,input,'0'⟩
+		end
+	if Character.getNumericValue(state[3])  >= 7 then
+		return λ
+	end
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	if state[0]='1'then	
+		
+		if state[1] != state[2]then
+		return λ
+		end
+		
+		
+		if state[2]= input then
+			return ⟨'2', input,input,'1'⟩
+			
+		else return ⟨'2', input,state[2],'0'⟩
+			
+		end
+   
+   
+   
+	
+	elseif state[0]='2' then 
+		if state[2]= input then
+			turn = Character.getNumericValue(state[3]) 
+			turn= turn+1
+			put= Character.forDigit(turn,10)
+			return ⟨'3', input,state[2],put⟩
+			
+		else return ⟨'3', input,state[2],state[3]⟩
+			
+		end
+	elseif state[0]='3' then 
+		if state[2]= input then
+			turn = Character.getNumericValue(state[3]) 
+			turn= turn+1
+			put= Character.forDigit(turn,10)
+			return ⟨'4', input,state[2],put⟩
+			
+		else return ⟨'4', input,state[2],state[3]⟩
+			
+		end
+	elseif state[0]='4' then 
+		if state[2]= input then
+			turn = Character.getNumericValue(state[3]) 
+			turn= turn+1
+			put= Character.forDigit(turn,10)
+			return ⟨'5', input,state[2],put⟩
+			
+		else return ⟨'5', input,state[2],state[3]⟩
+			
+		end
+	elseif state[0]='5' then 
+		if state[2]= input then
+			turn = Character.getNumericValue(state[3]) 
+			turn= turn+1
+			put= Character.forDigit(turn,10)
+			return ⟨'6', input,state[2],put⟩
+			
+		else return ⟨'6', input,state[2],state[3]⟩
+			
+		end
+	
+	elseif state[0]='6' then 
+		if state[2]= input then
+			turn = Character.getNumericValue(state[3]) 
+			turn= turn+1
+			put= Character.forDigit(turn,10)
+			return ⟨'7', input,state[2],put⟩
+			
+		else return ⟨'7', input,state[2],state[3]⟩
+			
+		end
+	elseif state[0]='7' then 
+		if state[2]= input then
+			turn = Character.getNumericValue(state[3]) 
+			turn= turn+1
+			put= Character.forDigit(turn,10)
+			return ⟨'8', input,state[2],put⟩
+			
+		else return ⟨'8', input,state[2],state[3]⟩
+			
+		end
+		
+	elseif state[0]='8' then return "1"
+	else return λ
+   	end
+	
+end
+
+
+
+
+
+	
+function g(state) begin
+	if state= λ then
+		return λ
+		
+	end
+	turn = Character.getNumericValue(state[0]) 
+			turn= turn-1
+			put= Character.forDigit(turn,10)
+   if state="1" then return λ
+   	
+   elseif state[0] ='1' then return state[1]
+   elseif state[0] in ('2'‥'7') and state[1] != state[2]then return StringBuilder().append(put).append(state[1]).toString()
+   elseif state[0] in ('2'‥'7') and state[1] = state[2] then return λ
+   else 
+		if state[1]!=state[2] then
+		devolver= StringBuilder().append(put).append(state[1]).append('$').append(state[3]).toString()
+		return devolver
+		else return	StringBuilder().append('$').append(state[3]).toString()
+		end
+   	end
+
+
+end
+
+function h(aaaa,aaaaaa) begin
+	return λ
+end
+
+function createDecoder():ITransducer begin
+	Q:= {"1","$",λ,"fn"}∪('a'‥'z')×('a'‥'z')×('0'‥'8')×('0'‥'7')×{'l','n'}
+	
+	Σ:=('a'‥'z')∪('0'‥'7')∪{'$'}
+	Σ´:=('a'‥'z')∪('0'‥'7')∪{'$'}
+	q₀:= "1"
+	F:=	 {"fn"}
+
+	return 	GDeterministicTransducer(Q,Σ,Σ´,q₀,F,δ1,g1,h1)
+end
+
+	
+	
+	
+function δ1(state,input) begin
+print(input)
+print(state)
+if state=λ then
+	
+		return λ end
+if state=  "$" then return "1" end
+if state= "1" and input = '$' then
+	
+	return λ end 
+if state= "1" and input in ('0'‥'9') then
+	
+	return λ end 
+if state= "1" 
+	
+	then return ⟨input,input,'1','0','l'⟩
+ end
+if state="fn" then return "1" end
+if state[2]='1' and state[3]='7' then return "$" end
+if state [4]='l' and input in ('a'‥'z')then
+	return λ end
+if state[4]='n' and input in ('0'‥'9') then
+	return λ end
+ if input = '$' and state[2] = '1' then	
+ 	
+return ⟨state[0],state[1],'1','7','n'⟩ end
+ 	
+ if input = '$' and state[2] = '8' then return "fn" end
+ 
+ if state[4]='l' and input != '$'then
+ 	
+    
+ 	inputnum = Character.getNumericValue(input) 
+ 	expected= Character.getNumericValue(state[2])
+ 	if inputnum < expected then
+ 		return λ end
+	diff= inputnum - expected
+	newexp= inputnum+1
+	chdf= Character.forDigit(diff,10)
+	if diff <0 then
+		return λ
+	
+	elseif state[2]='8' then
+		return "$"
+	else 
+	chne= Character.forDigit(newexp,10)
+    return ⟨state[0],state[1]	,chne,chdf,'n'⟩
+    end
+elseif state[4]='n' and input != '$'  then
+	return⟨state[0],input,state[2],state[3],'l'⟩
+else 
+	return λ 
+end
+
+end
+// ------
+function g1(state) begin
+	if state = "fn" then
+		return λ end
+	if state= λ then
+		return λ end
+	if state="1" or state="$" then return λ end
+	if state[4]='l' then
+		
+		return state[1]
+	else
+		 cantidad= Character.getNumericValue(state[3])
+		if cantidad = 1 then
+			
+			return state[0]
+		elseif cantidad = 0 then
+			
+			return λ
+		elseif cantidad = 2 then
+			devolver= StringBuilder().append(state[0]).append(state[0]).toString()
+			
+			return devolver
+		elseif cantidad = 3 then
+			devolver= StringBuilder().append(state[0]).append(state[0]).append(state[0]).toString()
+			
+			return devolver
+		elseif cantidad = 4 then
+			devolver= StringBuilder().append(state[0]).append(state[0]).append(state[0]).append(state[0]).toString()
+			
+			return devolver
+		elseif cantidad = 5 then
+			devolver= StringBuilder().append(state[0]).append(state[0]).append(state[0]).append(state[0]).append(state[0]).toString()
+			
+			return devolver
+		elseif cantidad = 6 then
+			devolver= StringBuilder().append(state[0]).append(state[0]).append(state[0]).append(state[0]).append(state[0]).append(state[0]).toString()
+			
+			return devolver
+		elseif cantidad = 7 then
+			devolver= StringBuilder().append(state[0]).append(state[0]).append(state[0]).append(state[0]).append(state[0]).append(state[0]).append(state[0]).toString()
+			
+			return devolver
+		else
+			
+			return λ
+		
+			
+		end
+		
+	end
+end
+function h1(state,input) begin 
+ 
+   return λ
+ 
+end
+
+
+
+
+
+
+
